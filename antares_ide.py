@@ -23,7 +23,7 @@ import runner
 from help_data import BUILTINS, STATEMENTS, VERSION as MANUAL_VERSION
 
 APP = "Antares IDE"
-IDE_VERSION = "1.0"
+IDE_VERSION = "1.0.1"
 HERE = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
 SETTINGS_FILE = Path.home() / ".antares_ide.json"
 SCRATCH = Path(tempfile.gettempdir()) / "antares_ide"
@@ -570,6 +570,7 @@ class OutputPanel(tk.Frame):
         self.clear_btn.pack(side="right", padx=6, pady=2)
         body = tk.Frame(self)
         body.pack(fill="both", expand=True)
+        self.body = body
         self.text = tk.Text(body, wrap="word", height=10, bd=0, highlightthickness=0, padx=10, pady=6,
                             font=(mono_font(), app.settings["font_size"] - 1), state="disabled", cursor="arrow")
         sb = ttk.Scrollbar(body, orient="vertical", command=self.text.yview)
@@ -620,7 +621,8 @@ class OutputPanel(tk.Frame):
 
     def ask_input(self, on):
         if on:
-            self.input_row.pack(fill="x", side="bottom")
+            # packed before the output text, which would otherwise take all the room
+            self.input_row.pack(fill="x", side="bottom", before=self.body)
         else:
             self.input_row.pack_forget()
 
@@ -1604,6 +1606,9 @@ class SelfTest:
         self.check(self.app.run is not None, "Run starts the program")
 
         def answer():
+            row = self.app.output.input_row
+            self.app.root.update()
+            self.check(row.winfo_ismapped() and row.winfo_height() > 10, "the answer box is visible while the program waits")
             self.app.output.entry.insert(0, "Maya")
             self.app.output._send()
             self.wait_run(after)
