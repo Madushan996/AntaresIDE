@@ -1,0 +1,9 @@
+# Asking an AI model (practise offline with the echo model)
+model claude = "echo"
+# With an API key, use a real model instead:
+# model claude = "anthropic:claude-opus-5-5"
+
+topic = "Saturn"
+show ask claude "Tell me one fact about {topic}."
+legs = ask claude "A spider has 8 legs" as number
+show "A spider and a beetle have {legs + 6} legs together."

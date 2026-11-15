@@ -1,0 +1,24 @@
+# Guess the number: a game that asks you questions
+secret = floor(rand() * 100) + 1
+tries = 0
+show "I'm thinking of a number from 1 to 100."
+
+while yes {
+    typed = input("Your guess: ")
+    when typed == nothing { stop }
+    try {
+        guess = number(typed)
+    } else {
+        show "Please type a number."
+        skip
+    }
+    tries += 1
+    when guess < secret {
+        show "Higher!"
+    } else when guess > secret {
+        show "Lower!"
+    } else {
+        show "Correct! You found it in {tries} tries."
+        stop
+    }
+}

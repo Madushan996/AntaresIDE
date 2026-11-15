@@ -1,0 +1,13 @@
+# Word counter: working with text
+sentence = "the cat and the dog and the bird"
+counts = {}
+each word in split(sentence) {
+    when has(counts, word) {
+        counts[word] += 1
+    } else {
+        counts[word] = 1
+    }
+}
+each word in sort_by(keys(counts), w => -counts[w]) {
+    show pad(word, 6) + counts[word]
+}

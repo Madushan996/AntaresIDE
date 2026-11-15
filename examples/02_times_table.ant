@@ -1,0 +1,9 @@
+# Times table: loops inside loops
+size = 5
+repeat size as row {
+    line = ""
+    repeat size as column {
+        line += pad(row * column, 4)
+    }
+    show line
+}

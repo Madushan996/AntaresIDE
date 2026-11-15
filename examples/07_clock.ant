@@ -1,0 +1,11 @@
+# What time is it? The date and time
+t = now()
+show "Today is {t.weekday}, {t.day}/{t.month}/{t.year}"
+show "The time is {t.hour}:{pad(t.minute, 2, "right", "0")}"
+when t.hour < 12 {
+    show "Good morning!"
+} else when t.hour < 18 {
+    show "Good afternoon!"
+} else {
+    show "Good evening!"
+}

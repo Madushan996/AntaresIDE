@@ -1,0 +1,5 @@
+__pycache__/
+build/
+*.spec
+# built by tools/build_exe.py
+AntaresIDE.exe

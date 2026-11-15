@@ -1,0 +1,89 @@
+# Snake
+# Steer with the arrow keys or W A S D. Press Q to quit.
+# Run it in a terminal:  antares examples/snake.ant
+
+width = 24
+height = 14
+speed = 0.12                 # seconds between moves; smaller is faster
+
+to random_cell() = {x: floor(rand() * width), y: floor(rand() * height)}
+
+# Pick an empty cell for the food
+to place_food(snake) {
+    spot = random_cell()
+    while has(snake, spot) { spot = random_cell() }
+    spot
+}
+
+# The direction after pressing a key (the snake can't turn straight back)
+to turn(moving, pressed) {
+    want = moving
+    when pressed == "up" or pressed == "w" { want = {x: 0, y: -1} }
+    else when pressed == "down" or pressed == "s" { want = {x: 0, y: 1} }
+    else when pressed == "left" or pressed == "a" { want = {x: -1, y: 0} }
+    else when pressed == "right" or pressed == "d" { want = {x: 1, y: 0} }
+    when want.x == -moving.x and want.y == -moving.y { give moving }
+    want
+}
+
+# The whole screen as one piece of text
+to picture(snake, food, score) {
+    edge = "+" + join(map(range(width), i => "--")) + "+"
+    screen = "  SNAKE     score: {score}\n" + edge + "\n"
+    each y in range(height) {
+        row = "|"
+        each x in range(width) {
+            cell = {x: x, y: y}
+            when cell == snake[0] { row = row + "@ " }
+            else when has(snake, cell) { row = row + "o " }
+            else when cell == food { row = row + "* " }
+            else { row = row + "  " }
+        }
+        screen = screen + row + "|\n"
+    }
+    screen + edge + "\n  arrows or WASD to steer, Q to quit"
+}
+
+snake = [{x: 5, y: 7}, {x: 4, y: 7}, {x: 3, y: 7}]
+moving = {x: 1, y: 0}
+food = place_food(snake)
+score = 0
+ending = "You quit."
+
+clear()
+while yes {
+    # Read every key pressed since the last move; the last one wins
+    heading = moving
+    pressed = key()
+    while pressed != nothing {
+        when pressed == "q" { stop }
+        heading = turn(moving, pressed)
+        pressed = key()
+    }
+    when pressed == "q" { stop }
+    moving = heading
+
+    head = {x: snake[0].x + moving.x, y: snake[0].y + moving.y}
+    when head.x < 0 or head.x >= width or head.y < 0 or head.y >= height {
+        ending = "You hit the wall."
+        stop
+    }
+    when has(snake[:-1], head) {
+        ending = "You ran into yourself."
+        stop
+    }
+
+    when head == food {
+        snake = [head] + snake              # grow: keep the tail
+        score = score + 1
+        food = place_food(snake)
+    } else {
+        snake = [head] + snake[:-1]         # move: drop the tail
+    }
+
+    draw(picture(snake, food, score))
+    wait(speed)
+}
+
+show ""
+show "Game over. {ending} Final score: {score}"

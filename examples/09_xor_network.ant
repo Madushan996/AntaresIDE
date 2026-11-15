@@ -1,0 +1,20 @@
+# A tiny neural network that learns XOR
+seed(7)
+x = [[0, 0], [0, 1], [1, 0], [1, 1]]
+y = [[0], [1], [1], [0]]
+
+learn w1 = randn(2, 8) * 0.5
+learn b1 = zeros(8)
+learn w2 = randn(8, 1) * 0.5
+learn b2 = zeros(1)
+
+to net(input) = input @ w1 + b1 -> tanh -> (h => h @ w2 + b2) -> sigmoid
+
+repeat 1000 {
+    loss = mean((net(x) - y) ^ 2)
+    descend loss by 0.05 using adam
+}
+show "Inputs  Answer"
+each i in range(4) {
+    show "{x[i]}  {round(net(x)[i, 0])}"
+}

@@ -1,0 +1,40 @@
+# To-do list: a program that remembers, using a file
+FILE = "todo.json"
+todo = []
+when exists(FILE) { todo = load(FILE) }
+
+to show_list(items) {
+    when len(items) == 0 { show "(nothing to do)" }
+    each i in range(len(items)) {
+        show "{i + 1}. {items[i]}"
+    }
+}
+
+show "Commands: add <task>, done <number>, list, quit"
+show_list(todo)
+while yes {
+    line = input("> ")
+    when line == nothing or line == "quit" { stop }
+    words = split(line)
+    when len(words) == 0 { skip }
+    command = words[0]
+    rest = trim(slice(line, len(command)))
+    when command == "add" {
+        todo = push(todo, rest)
+        show "Added: {rest}"
+    } else when command == "done" {
+        try {
+            n = number(rest)
+            check(n >= 1 and n <= len(todo), "there is no task {rest}")
+            show "Done: {todo[n - 1]}"
+            todo = remove(todo, n - 1)
+        } else problem {
+            show "Sorry,", problem
+        }
+    } else when command == "list" {
+        show_list(todo)
+    } else {
+        show "I don't know '{command}'"
+    }
+    save(todo, FILE)
+}

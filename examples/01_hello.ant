@@ -1,0 +1,4 @@
+# Hello, world: your first program
+name = "world"
+show "Hello, {name}!"
+show "Antares can do sums: 2 + 3 is {2 + 3}"

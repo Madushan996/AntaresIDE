@@ -1,0 +1,20 @@
+# Grade book: lists, maps and functions
+students = [
+    {name: "Ana", marks: [82, 91, 77]},
+    {name: "Ben", marks: [64, 58, 71]},
+    {name: "Cleo", marks: [95, 88, 92]},
+    {name: "Dev", marks: [45, 62, 50]}
+]
+
+to grade(average) {
+    when average >= 85 { give "A" }
+    when average >= 70 { give "B" }
+    when average >= 55 { give "C" }
+    "D"
+}
+
+show pad("Name", 8) + pad("Average", 9) + "Grade"
+each s in sort_by(students, s => -mean(s.marks)) {
+    average = mean(s.marks)
+    show pad(s.name, 8) + pad(fixed(average, 1), 7, "right") + "  " + grade(average)
+}
