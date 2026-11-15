@@ -10,6 +10,8 @@ A small, friendly place to write and run [Antares](https://github.com/Madushan99
 
 New to programming? The free book [Learn Antares](https://github.com/Madushan996/Antares-Programming-Language/blob/main/docs/Learn_Antares.pdf) goes well with the IDE: its examples can be typed in and run with F5.
 
+## What it does
+
 - **Write.** Your code is coloured as you type, with line numbers. Indenting is automatic, brackets close themselves, and a list of words appears as you type: press **Tab** to accept one.
 - **Run.** Press the green **Run** button (or **F5**) and see what your program shows in the panel below. When a program asks a question with `input()`, type your answer in the box that appears and press Enter. Programs that draw on the screen with `key()`, `draw()` and `clear()` (games, animations) open in their own window.
 - **Fix problems.** When something goes wrong, the line is marked in red, the cursor jumps to it, and a hint in plain words explains what usually causes it. Click **Show me line N** to jump back.
